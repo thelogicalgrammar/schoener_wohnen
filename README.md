@@ -1,6 +1,6 @@
 # Automatic event creation from schoener-wohnen mailing list
 
-This project aims at automatically adding events from the emails in Tübingen's shoener-wohnen mailing list (of which I'm a big fan) to a google calendar. It was a Sunday afternoon project so there's more to do, but the current basic version is working. Current version of the calendar (possibly not up-to-date) is [here](https://calendar.google.com/calendar/u/0?cid=OGFjOWU0MTgyZTg5MDJlMDBhM2M5NWI0ZDI5ODUxMGNjYzY3NjFjZDE5Y2RjZGQxN2Y2NzcxZDI3YzY5NTUxOUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t).
+This project aims at automatically adding events from the emails in Tübingen's shoener-wohnen mailing list (of which I'm a big fan) to a google calendar. It was a Sunday afternoon project so there's more to do, but the current basic version is working. 
 
 # Setup
 
@@ -37,7 +37,9 @@ You'll also need to create a google calendar called `shoener-wohnen`, in which t
 
 # TODO
 
+- Deal with inputs that are too long, e.g. truncate after max number of tokens. Or possibly first summarize the text.
 - Sometimes the json isn't well formatted. Do something about that.
+- Deal with emails which contain multiple events, e.g., over multiple days.
 - Deal with events that don't have a precise begin/end.
 - Add support for open access LLM.
 

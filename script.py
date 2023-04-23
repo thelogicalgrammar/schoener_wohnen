@@ -124,7 +124,7 @@ def get_email_body(msg):
 
 
 def get_emails_matching_subject_pattern(service):
-    query = f'subject:"[schoener-wohnen-tuebingen]" newer_than:7d'
+    query = f'subject:"[schoener-wohnen-tuebingen]" newer_than:60d'
     results = service.users().messages().list(userId='me', q=query).execute()
     messages = results.get("messages", [])
 
@@ -174,7 +174,7 @@ def main():
         print(f"No calendar found with name '{calendar_name}'")
         return
 
-    for email in emails[:3]:
+    for email in emails:
 
         json_event = body_to_event(email)['text']
         # clean from newline characters
@@ -184,6 +184,7 @@ def main():
             json_event = json.loads(json_event)
         except json.decoder.JSONDecodeError:
             print("Error parsing event as JSON")
+            continue
 
         print(json_event)
 
