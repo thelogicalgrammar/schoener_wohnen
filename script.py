@@ -164,6 +164,8 @@ def agent_to_event(email, creds):
             "if the events do not already exist.\n"
             "The language of the email body is either German or English.\n"
             "To achieve your task, you have various tools at your disposal. "
+            "First, calendar-event-checker checks if an event already exists in the Google Calendar. "
+            "Second, calendar-event-creator creates a new event in the Google Calendar.\n"
             "To achieve your task, first check if the event(s) already exist in the Google Calendar. "
             "Only if the event does not already exist, use the Google Calendar API tool to create the event(s).\n"
             "If the event already exists or no event can be found in the email, you can stop.\n"
@@ -178,7 +180,10 @@ def agent_to_event(email, creds):
         input_variables = ['body', 'date'],
     )
 
-    model = ChatOpenAI(temperature=0.1)
+    model = ChatOpenAI(
+        temperature=0.1,
+        request_timeout=120
+    )
 
     tools = define_tools(creds)
 
@@ -292,7 +297,22 @@ def main():
     )
 
     for email in emails:
-        print("Working on next email")
+
+        print("Working on next email from " + email["date"])
+
+        # check if email has been processed already from a json file
+        # if so, skip it
+        with open("email_dates.json", "r") as f:
+            email_dates = json.load(f)
+            if email["date"] in email_dates:
+                print("Email already processed, moving onto next email")
+                continue
+
+        # add email date to json file
+        with open("email_dates.json", "w") as f:
+            email_dates.append(email["date"])
+            json.dump(email_dates, f)
+
         agent_to_event(
             email,
             creds
